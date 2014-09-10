@@ -95,32 +95,35 @@ class PixelDisplay(Canvas):
 	#draws a cell.
 	def drawPixel(self, x,y, c):
 		x = self.gridPos(x)
-		y = self.gridPos(y)
-		self.create_rectangle(x, y, x+self.pixelSize, y+self.pixelSize, fill=c.value)
+		y = self.gridPos(self.translateHeight(y))
+		self.create_rectangle(x, y, x+self.pixelSize, y-self.pixelSize, fill=c.value)
 	
 	#draws the start cell
 	def drawStart(self, x,y,c):
 		self.drawPixel(x,y,c)
 		x = self.gridPos(x)
-		y = self.gridPos(y)
-		self.create_text(x+ self.pixelSize*1/2,y + self.pixelSize*1/2, text="S")
+		y = self.gridPos(self.translateHeight(y))
+		self.create_text(x+ self.pixelSize*1/2,y - self.pixelSize*1/2, text="S")
 
 	#draws the goal cell
 	def drawEnd(self, x,y,c):
 		self.drawPixel(x,y,c)
 		x = self.gridPos(x)
-		y = self.gridPos(y)
-		self.create_text(x + self.pixelSize*1/2, y + self.pixelSize*1/2, text="E")
+		y = self.gridPos(self.translateHeight(y))
+		self.create_text(x + self.pixelSize*1/2, y - self.pixelSize*1/2, text="E")
 
 	#Draws a red rectangle representing an obstacle
 	def drawObstacle(self, x, y, w, h):
 		x = self.gridPos(x)
-		y = self.gridPos(y)
+		y = self.gridPos(self.translateHeight(y))
 		self.create_rectangle(x,
 							y,
-							x+self.pixelSize*w,
-							y+self.pixelSize*h,
+							x+(self.pixelSize*w),
+							y-(self.pixelSize*h),
 							fill=FillColor.OBSTACLE.value)
+
+	def translateHeight(self, y):
+		return math.fabs(self.height -y)
 
 #Enum for fill colors for the different cells in the canvas.
 class FillColor(Enum):
