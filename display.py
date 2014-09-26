@@ -52,7 +52,7 @@ class PixelDisplay(Canvas):
 
 
 		if not self.stopped or len(self.queue) > 0:
-			self.after(100, self.draw)
+			self.after(50, self.draw)
 
 
 	def start(self):
